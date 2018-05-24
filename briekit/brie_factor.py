@@ -5,7 +5,7 @@
 # 3. Conservation score #7: C1, I1_5p, I1, I1_3p, A, I2_5p, I2, I2_3p, C2
 # 4. 2-4 mers for above 7 regions #716: 3mer, 2mer, 3mer, 4mer, 3mer, 2mer, 3mer
 
-# Yuanhua Huang, 2016/11/10
+# Yuanhua Huang, 2018/5/22
 
 
 import os
@@ -66,7 +66,7 @@ def main():
 
     (options, args) = parser.parse_args()
     if len(sys.argv[1:]) == 0:
-        print("Welcome to Brie-factor extactor!\n")
+        print("Welcome to BRIEkit-factor extactor!\n")
         print("use -h or --help for help on argument.")
         sys.exit(1)
     if options.anno_file is None:
@@ -91,7 +91,12 @@ def main():
         out_file = os.path.join(os.path.dirname(os.path.abspath(ref_file)), 
                                 "/brieFactor.cvs")
     else:
-        out_file = options.out_file
+        if options.out_file.endswith(".gz"):
+            out_file = options.out_file[:-3]
+        elif options.out_file.endswith(".gzip"):
+            out_file = options.out_file[:-5]
+        else:
+            out_file = options.out_file
     nproc = options.nproc
     
     if options.phast_file is None:
