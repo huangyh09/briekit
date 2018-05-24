@@ -28,7 +28,11 @@ def readTable_gff(table_f, ftype="gff3"):
     We assume that the gene comes out before transcript;
     and transcript comes out before exons.
     """
-    fid = open(table_f, "r")
+    if table_f.endswith(".gz") or table_f.endswith(".gzip"):
+        import gzip
+        fid = gzip.open(table_f, "rb")
+    else:
+        fid = open(table_f, "r")
     all_lines = fid.readlines()
     fid.close()
 
@@ -60,6 +64,7 @@ def readTable_gff(table_f, ftype="gff3"):
             exons.append([str(int(vals[3])-1), vals[4]])
             
         if (i == len(all_lines)-1 or 
+            len(all_lines[i+1].strip().split("\t")) < 8 or # change chrom
             all_lines[i+1].strip().split("\t")[2] == "gene" or
             all_lines[i+1].strip().split("\t")[2] == "transcript" or
             all_lines[i+1].strip().split("\t")[2] == "mRNA"):
@@ -168,26 +173,6 @@ def readXref(xref_f):
             if desc != 'n/a' and geneToInfo[gene][1] == 'n/a':
                 geneToInfo[gene][1] = desc
     return geneToInfo
-
-
-def populateGenelist(table_f):
-   
-    data = readTable(table_f)
-    ssToGene = {}
-
-    for item in data: 
-        chromval, startvals, endvals, strandval, gene = item
-        startvals = map(int, startvals.split(",")[:-1])
-        startvals = map(str, [x + 1 for x in startvals])
-        endvals = endvals.split(",")[:-1]
-        for i in range(len(startvals)):
-            ss1 = ":".join([chromval, startvals[i], strandval])
-            ss2 = ":".join([chromval, endvals[i], strandval])
-            ssToGene[ss1] = gene
-            ssToGene[ss2] = gene
-    
-    return ssToGene 
-
 
 
 

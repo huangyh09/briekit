@@ -5,10 +5,11 @@
 import os
 import sys
 import time
+import subprocess
 from optparse import OptionParser, OptionGroup
 
-import brie.events.parseTables as parseTables
-from brie.events.defineEvents import SE, MXE, RI, A3SS, A5SS
+import parseTables as parseTables
+from defineEvents import SE, MXE, RI, A3SS, A5SS
 
 # import gffutils
 # import gffutils.helpers as helpers
@@ -56,6 +57,15 @@ def defineAllSplicing(anno_file, ftype, gff3dir,
     if isinstance(multi_iso, str):
         multi_iso = eval(multi_iso)
 
+    if ftype is None:
+        if anno_file.count("gtf"):
+            ftype = "gtf"
+        elif anno_file.count("gff3"):
+            ftype = "gff3"
+        else:
+            ftype = "ucsc"
+            print("Warning: unfound annotation file type, use UCSC table!")
+
     DtoA_F, AtoD_F, DtoA_R, AtoD_R = prepareSplicegraph(anno_file, ftype)
 
     # Encode the flanking exons rule in output directory
@@ -79,32 +89,31 @@ def defineAllSplicing(anno_file, ftype, gff3dir,
         out_fname = os.path.join(gff3dir, "SE%s.gff3" %(genome_label))
         fname_all.append(out_fname)
         SE(DtoA_F, AtoD_F, DtoA_R, AtoD_R, out_fname, flanking)
+        subprocess.check_call(['gzip', out_fname])
 
     if "RI" in event_types:
         out_fname = os.path.join(gff3dir, "RI%s.gff3" %(genome_label))
         fname_all.append(out_fname)
         RI(DtoA_F, AtoD_F, DtoA_R, AtoD_R, out_fname, multi_iso)
+        subprocess.check_call(['gzip', out_fname])
 
     if "MXE" in event_types:
         out_fname = os.path.join(gff3dir, "MXE%s.gff3" %(genome_label))
         fname_all.append(out_fname)
         MXE(DtoA_F, AtoD_F, DtoA_R, AtoD_R, out_fname, flanking)
+        subprocess.check_call(['gzip', out_fname])
 
     if "A3SS" in event_types:
         out_fname = os.path.join(gff3dir, "A3SS%s.gff3" %(genome_label))
         fname_all.append(out_fname)
         A3SS(DtoA_F, AtoD_F, DtoA_R, AtoD_R, out_fname, flanking, multi_iso)
+        subprocess.check_call(['gzip', out_fname])
 
     if "A5SS" in event_types:
         out_fname = os.path.join(gff3dir, "A5SS%s.gff3" %(genome_label))
         fname_all.append(out_fname)
         A5SS(DtoA_F, AtoD_F, DtoA_R, AtoD_R, out_fname, flanking, multi_iso)
-        
-    # If asked, sanitize the annotation in place
-    if sanitize:
-        for _fname in fname_all:
-            print("Sanitizing %s" %(_fname))
-            helpers.sanitize_gff_file(_fname, in_place=True)
+        subprocess.check_call(['gzip', out_fname])
 
 
 def main():
@@ -118,7 +127,7 @@ def main():
                         help="The annotation files used in making the "
                         "annotation. You could input multiple files; use comma"
                         "',' as delimiter.")
-    parser.add_option("--anno_type", default="gtf",
+    parser.add_option("--anno_type", default=None,
                         help="The type of each annotation file. Use one for "
                         "all files or set for each file. Use comma ',' as "
                         "delimiter. You could choose 'ucsc', 'gtf', 'gff3'. "

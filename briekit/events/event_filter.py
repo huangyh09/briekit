@@ -12,9 +12,10 @@
 # those genes, we will include the exons with high quality.
 
 import sys
+import subprocess
 import numpy as np
-from brie.utils.fasta_utils import FastaFile
-from brie.utils.gtf_utils import loadgene, savegene
+from briekit.utils.fasta_utils import FastaFile
+from briekit.utils.gtf_utils import loadgene, savegene
 from optparse import OptionParser, OptionGroup
 
 def get_gene_idx(anno_in):
@@ -287,7 +288,7 @@ def main():
     parser.add_option("--reference", "-r", dest="reference", default=None,
         help="The genome reference sequence file in fasta format.")
     parser.add_option("--out_file", "-o", dest="out_file", default=None,
-        help="The prefix of out files.")
+        help="The full path of out files: path/file.gtf")
 
     group = OptionGroup(parser, "Optional arguments")
     group.add_option("--as_exon_min", dest="as_exon_min", default="50",
@@ -311,7 +312,7 @@ def main():
 
     (options, args) = parser.parse_args()
     if len(sys.argv[1:]) == 0:
-        print("Welcome to brie-event-filter!\n")
+        print("Welcome to BRIEkit-event-filter!\n")
         print("use -h or --help for help on argument.")
         sys.exit(1)
 
@@ -319,13 +320,21 @@ def main():
         print("Error: need --anno_file for annotation.")
         sys.exit(1)
     else:
-        fid = open(options.anno_file, "r")
+        if options.anno_file.endswith(".gz") or options.anno_file.endswith(".gzip"):
+            import gzip
+            fid = gzip.open(options.anno_file, "rb")
+        else:
+            fid = open(options.anno_file, "r")
         anno_in = fid.readlines()
         fid.close()
     if options.out_file is None:
-        out_file = ".".join(options.anno_file.split(".")[:-1])
+        out_file = ".".join(options.anno_file.split(".")[:-2]) + ".filtered.gtf"
     else:
         out_file = options.out_file
+        if out_file.endswith(".gz"):
+            out_file = out_file[:-3]
+        elif out_file.endswith(".gzip"):
+            out_file = out_file[:-5]
     if options.reference is None:
         print("Error: need --reference for genome sequecne.")
         sys.exit(1)
@@ -379,11 +388,14 @@ def main():
     print("%d Skipped Exon events pass the overlapping check." %(len(g_idx)))
 
     # saving out
-    save_out(anno_out, anno_ref, out_file+".gold.gtf", chroms)
+    save_out(anno_out, anno_ref, out_file, chroms)
+    bashCommand = "gzip -f %s" %(out_file) 
+    pro = subprocess.Popen(bashCommand.split(), stdout=subprocess.PIPE)
+    output = pro.communicate()[0]
     
     # save gff format
-    genes = loadgene(out_file+".gold.gtf")
-    savegene(out_file+".gold.gff3", genes)
+    genes = loadgene(out_file)
+    savegene(out_file + ".filtered.gff3", genes)
 
 if __name__ == "__main__":
     main()
