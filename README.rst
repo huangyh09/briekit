@@ -39,7 +39,7 @@ Quick Start
 
 BRIE-kit is developed under Python 2.7 environment, and not full compatible 
 with Python 3, **so please use it in Python2 environment**. If you are using
-Python3 in Ananconda_ 3, you can simply create a conda_ environment with 
+Python3 in Anaconda_ 3, you can simply create a conda_ environment with 
 Python=2.7:
 
 .. code-block:: bash
