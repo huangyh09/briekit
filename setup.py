@@ -30,7 +30,7 @@ setup(
     long_description=long_description,
 
     # The project's main homepage.
-    url='ttps://github.com/huangyh09/briekit',
+    url='https://github.com/huangyh09/briekit',
 
     # Author details
     author='Yuanhua Huang',
