@@ -399,7 +399,8 @@ def main():
     
     # save gff format
     genes = loadgene(out_file + ".gz")
-    savegene(out_file + ".filtered.gff3", genes)
+    gff3_out_file = ".".join(out_file.split(".")[:-1]) + ".gff3.gz"
+    savegene(gff3_out_file, genes)
 
 if __name__ == "__main__":
     main()
