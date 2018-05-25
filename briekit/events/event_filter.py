@@ -344,7 +344,11 @@ def main():
     if options.anno_ref is None:
         anno_ref = None
     else:
-        fid = open(options.anno_ref, "r")
+        if options.anno_ref.endswith(".gz") or options.anno_ref.endswith(".gzip"):
+            import gzip
+            fid = gzip.open(options.anno_ref, "rb")
+        else:
+            fid = open(options.anno_ref, "r")
         anno_ref = fid.readlines()
         fid.close()
     
@@ -394,7 +398,7 @@ def main():
     output = pro.communicate()[0]
     
     # save gff format
-    genes = loadgene(out_file)
+    genes = loadgene(out_file + ".gz")
     savegene(out_file + ".filtered.gff3", genes)
 
 if __name__ == "__main__":
