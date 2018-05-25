@@ -37,14 +37,30 @@ Quick Start
 
 **Installation** 
 
-Recommend using Anaconda_ environment, otherwise add ``--user`` if you don't 
-have root permission. 
+BRIE-kit is developed under Python 2.7 environment, and not full compatible 
+with Python 3, **so please use it in Python2 environment**. If you are using
+Python3 in Ananconda_ 3, you can simply create a conda_ environment with 
+Python=2.7:
+
+.. code-block:: bash
+
+  conda create -n briekit python=2.7 numpy=1.13.0 
+
+  source activate briekit
+
+Once you are in a Python 2 environment, there are two ways to isntall: 
 
 - Opt 1: Type in terminal: ``pip install briekit``. Add ``-U`` if you want to 
   upgrade your earlier installation.
-- Opt 2: or download this repository, and type ``python setup.py install``
+- Opt 2: Download the GitHub repository_, and type ``python setup.py install``
 
-.. _Anaconda: https://www.continuum.io/anaconda-overview
+Note, if you don't use Anaconda_  and don't have root permission, add 
+``--user``, so you can install it in your folder.
+
+.. _conda: https://conda.io/docs/user-guide/tasks/manage-environments.html
+.. _Anaconda: https://anaconda.org
+.. _repository: https://github.com/huangyh09/briekit
+
 
 **Arguments**
 
@@ -57,7 +73,7 @@ Detailed manual
 See the documentation_ on how to install, to use, to find the annotation data 
 etc.
 
-.. _documentation: http://brie-rna.sourceforge.net
+.. _documentation: https://github.com/huangyh09/briekit/wiki
 
 
 References
