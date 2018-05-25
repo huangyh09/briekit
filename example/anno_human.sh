@@ -9,7 +9,7 @@
 
 
 # directory for your data and briekit executable files
-DATA_DIR=~/research/annotation/mouse
+DATA_DIR=~/research/annotation/human
 BIN_DIR=~/anaconda2/bin
 
 ### 1. download files
@@ -44,5 +44,5 @@ $BIN_DIR/briekit-factor -a $DATA_DIR/human_AS/SE.filtered.gff3.gz -r $fasta -c $
 
 
 feature=$DATA_DIR/human_AS/human_factors.SE.lenient.csv.gz
-$BIN_DIR/briekit-factor -a $DATA_DIR/human_AS/SE.extended.lenient.gff3.gz -r $fasta -c $phast -o $feature -p 20 --bigWigSummary $bigWigSummary
+$BIN_DIR/briekit-factor -a $DATA_DIR/human_AS/SE.lenient.gff3.gz -r $fasta -c $phast -o $feature -p 20 --bigWigSummary $bigWigSummary
 
