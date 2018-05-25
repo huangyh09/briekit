@@ -25,7 +25,8 @@ from BRIE main package:
 1. ``briekit-event``: Extract the splicing events from gene annotation file in 
 gff3/gtf formate.
 
-2. ``briekit-event-filter``: Filter exon-skipping events by setting thresholds.
+2. ``briekit-event-filter``: Filter exon-skipping events by setting 
+thresholds.
 
 3. ``briekit-factor``: Fetch genentic features from genome sequence reference 
 file in fasta formate.
@@ -40,7 +41,7 @@ Recommend using Anaconda_ environment, otherwise add ``--user`` if you don't
 have root permission. 
 
 - Opt 1: Type in terminal: ``pip install briekit``. Add ``-U`` if you want to 
-upgrade your earlier installation.
+  upgrade your earlier installation.
 - Opt 2: or download this repository, and type ``python setup.py install``
 
 .. _Anaconda: https://www.continuum.io/anaconda-overview
