@@ -7,9 +7,9 @@ Why BRIE-kit
 ------------
 
 The purpose of move some utility functions from BRIE_ main package into this 
-tool kit is that brie-event is only supported by Python 2 (see issue_). 
-Therefore, we keep a few pre-processing tool into this package and focus BRIE 
-main package on splicing quantification and analysis. 
+tool kit is that ``brie-event`` is only supported by Python 2 (see issue_). 
+Therefore, we keep a few pre-processing tools into this package and  BRIE main 
+package can focus on splicing quantification and downstream analysis. 
 
 **Therefore, use BRIE-kit in Python 2 environment only for full fucntions.**
 
@@ -19,16 +19,16 @@ main package on splicing quantification and analysis.
 Supported fucntions
 -------------------
 
-BRIE-kit provides following functions through command line:
+BRIE-kit provides following functions through command line, which are upgraded
+from BRIE main package:
 
 1. ``briekit-event``: Extract the splicing events from gene annotation file in 
-gff3/gtf formate. It is upgraded from ``brie-event``.
+gff3/gtf formate.
 
 2. ``briekit-event-filter``: Filter exon-skipping events by setting thresholds.
-It is upgraded upgraded from ``brie-event-filter``.
 
 3. ``briekit-factor``: Fetch genentic features from genome sequence reference 
-file in fasta formate. It is upgraded from of ``brie-factor``.
+file in fasta formate.
 
 
 Quick Start
@@ -39,7 +39,8 @@ Quick Start
 Recommend using Anaconda_ environment, otherwise add ``--user`` if you don't 
 have root permission. 
 
-- Opt 1: Type in terminal: ``pip install briekit``. Add ``-U`` for upgrading
+- Opt 1: Type in terminal: ``pip install briekit``. Add ``-U`` if you want to 
+upgrade your earlier installation.
 - Opt 2: or download this repository, and type ``python setup.py install``
 
 .. _Anaconda: https://www.continuum.io/anaconda-overview
