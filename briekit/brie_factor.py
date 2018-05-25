@@ -56,6 +56,8 @@ def main():
     group = OptionGroup(parser, "Optional arguments")
     group.add_option("--nproc", "-p", type="int", dest="nproc", default=4,
         help="Number of subprocesses [default: %default]")
+    group.add_option("--bigWigSummary", dest="bigWigSum", default=None,
+        help="The full path of executable bigWigSummary")
     group.add_option("--MSA5ss", dest="msa_5ss", default=None,
         help=("Mutiple sequence alignment file for 5'splice-site. It is from "
               "-4 to 7. As default, MSA is based on input 5 splice sites."))
@@ -107,6 +109,12 @@ def main():
         phast_file = None
     else:
         phast_file = options.phast_file
+    
+    if options.bigWigSum is not None:
+        if os.access(options.bigWigSum, os.X_OK) == False:
+            print("[briekit-factor] Error: bigWigSummary not exist or not "
+            "executable %s" %options.bigWigSum)
+            sys.exit(1)
 
     if options.msa_5ss is None:
         msa_5ss = None
@@ -141,7 +149,7 @@ def main():
     if nproc <= 1:
         for g in range(len(genes)):
             RV = get_factor(genes[g].trans[0], ref_file, 
-                phast_file)
+                phast_file, options.bigWigSum)
             SS_seq.append(RV["SS_seq"])
             features[g, 4:] = RV["factor_val"]
             show_progress()
@@ -150,7 +158,7 @@ def main():
         result = []
         for g in genes:
             result.append(pool.apply_async(get_factor, (g.trans[0], ref_file, 
-                phast_file), callback=show_progress))
+                phast_file, options.bigWigSum), callback=show_progress))
         pool.close()
         pool.join()
         for g in range(len(result)):

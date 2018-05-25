@@ -86,9 +86,12 @@ def get_factorID(phast_in=False):
     return RV
 
 
-def get_factor(tran, ref_file, phast_file):
+def get_factor(tran, ref_file, phast_file, bigWigSummary):
     """Get sequence factors. Need bigWigSummary in $Path for Phast file.
     """
+    if bigWigSummary is None:
+        bigWigSummary = "bigWigSummary"
+
     # RV = np.zeros(735)
     RV = {}
     if tran.exonNum != 3:
@@ -137,7 +140,7 @@ def get_factor(tran, ref_file, phast_file):
     cons_val = []
     if phast_file is not None:
         for i in range(len(regions)):
-            bashCommand = "bigWigSummary %s %s %d %d 1" %(phast_file, chrom, 
+            bashCommand = "%s %s %s %d %d 1" %(bigWigSummary, phast_file, chrom, 
                 regions[i][0], regions[i][1]) 
             pro = subprocess.Popen(bashCommand.split(), stdout=subprocess.PIPE)
             output = pro.communicate()[0]
