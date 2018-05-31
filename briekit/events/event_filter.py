@@ -15,7 +15,7 @@ import sys
 import subprocess
 import numpy as np
 from briekit.utils.fasta_utils import FastaFile
-from briekit.utils.gtf_utils import loadgene, savegene
+from briekit.utils.gtf_utils import loadgene, savegene, parse_attribute
 from optparse import OptionParser, OptionGroup
 
 def get_gene_idx(anno_in):
@@ -212,14 +212,12 @@ def save_out(anno_in, anno_ref, out_file, chroms=[]):
     fid = open(out_file, "w")
     fid.writelines("#annotation file with high-qulity alternative exons.\n")
     for i in range(0, len(anno_in), 8):
-        _gene_id = "#"
         if i is not None:
-            # idx  = gene_info[i].find("gene_id")
-            idx  = gene_info[ginfo_idx[i/8]].find("gene_id")
-            if idx > -1:
-                # _gene_id = gene_info[i][idx:].split('"')[1].split("\n")[0]
-                _gene_id = gene_info[ginfo_idx[i/8]][idx:].split('"')[1].split("\n")[0]
-            _gene_id = _gene_id.split(".")[0]
+            attributes = parse_attribute(gene_info[ginfo_idx[i/8]], default="#")
+        else:
+            attributes = {"ID": "#", "Name": "#", "Type": "#"}
+        _gene_id = attributes["ID"]
+            
         _num = temp_gene.count(_gene_id)
         temp_gene.append(_gene_id)
         if _num > 0:
@@ -227,7 +225,7 @@ def save_out(anno_in, anno_ref, out_file, chroms=[]):
 
         if _gene_id.startswith("#"): 
             if anno_in[i].split()[6] != "-": 
-                print("test")
+                print("Warning: gene %s not found!" %exon_str_SE[i])
                 for temp in anno_in[i:i+8]:
                     print(temp.split()[:-1] )
                 continue
@@ -239,9 +237,10 @@ def save_out(anno_in, anno_ref, out_file, chroms=[]):
                 for k in range(8): anno_in[i+k] = "chr" + anno_in[i+k]
             elif len(chrom) > 3 and chroms.count(chrom[3:]) == 1:
                 for k in range(8): anno_in[i+k] = anno_in[i+k][3:]
-
+        
         vals = anno_in[i+0].strip().split("\t")
-        vals[8] = "gene_id \"%s\"" %(_gene_id)
+        vals[8] = "gene_id \"%s\"; gene_name \"%s\"; gene_type \"%s\"" %(_gene_id,
+                                           attributes["Name"], attributes["Type"])
         fid.writelines("\t".join(vals) + "\n")
 
         vals = anno_in[i+1].strip().split("\t")
