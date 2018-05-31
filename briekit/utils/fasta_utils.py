@@ -46,6 +46,8 @@ def rev_seq(seq):
 def get_motif(seq_full, motif, mode="counts"):
     """get the counts of motif in a sequence"""
     cnt = 0
+    if len(seq_full) < len(motif):
+        return cnt
     for i in range(len(seq_full)-len(motif)+1):
         if seq_full[i:i+len(motif)] == motif:
             cnt += 1
