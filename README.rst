@@ -70,10 +70,10 @@ Note, if you don't use Anaconda_  and don't have root permission, add
 Detailed manual
 ---------------
 
-See the documentation_ on how to install, to use, to find the annotation data 
+See the Wiki_ documentation on how to install, to use, to find the annotation data 
 etc.
 
-.. _documentation: https://github.com/huangyh09/briekit/wiki
+.. _Wiki: https://github.com/huangyh09/briekit/wiki
 
 
 References
