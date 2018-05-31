@@ -179,7 +179,7 @@ Then, you could get the sequence features by ``briekit-factor``, for example,
   #download phastCon file
   wget http://hgdownload.cse.ucsc.edu/goldenPath/mm10/phastCons60way/mm10.60way.phastCons.bw
 
-  briekit-factor -a AS_events/SE.filtered.gff3.gz -r GRCm38.p5.genome.fa -c mm10.60way.phastCons.bw -o mouse_features.csv -p 10
+  briekit-factor -a AS_events/SE.filtered.gff3.gz -r GRCm38.p5.genome.fa -c mm10.60way.phastCons.bw -o mouse_features.csv -p 10 --bigWigSummary ./bigWigSummary
 
 Then you will have the features stored in a ``mouse_features.csv.gz`` file, 
 where #`factors` * #`gene_ids` features values are saved.
