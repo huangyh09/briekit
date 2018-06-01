@@ -11,7 +11,7 @@ BRIE-kit repository.
 .. _anno_mouse.sh: https://github.com/huangyh09/briekit/blob/master/example/anno_mouse.sh
 
 
-1. Installation
+0. Installation
 ===============
 
 We recommend using Python in Anaconda platform, which gives everything you need
@@ -47,7 +47,7 @@ pysam=0.10-0.14 works fine.
 .. _Anaconda: https://anaconda.org
 .. _repository: https://github.com/huangyh09/briekit
 
-2. Splicing events generation
+1. Splicing events generation
 =============================
 
 .. note::
