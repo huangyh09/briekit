@@ -1,0 +1,65 @@
+[data]
+# directory where BAM files are
+bam_prefix = ../sam/
+# directory where MISO output is
+miso_prefix = ../out/
+
+bam_files = [
+    "E7.75_c1.sorted.bam",
+    "E7.75_c2.sorted.bam"]
+
+miso_files = [
+    "E7.75_c1/samples.csv.gz",
+    "E7.75_c2/samples.csv.gz"]
+
+sample_labels = [
+    "7.75day cell1",
+    "7.75day cell2"]
+
+[plotting]
+# Dimensions of figure to be plotted (in inches)
+fig_width = 8.3
+fig_height = 2
+# Factor to scale down introns and exons by
+intron_scale = 30
+exon_scale = 4
+# Whether to use a log scale or not when plotting
+logged = False
+font_size = 6
+
+# Max y-axis
+# ymax = 360
+
+# Whether to plot posterior distributions inferred by MISO
+show_posteriors = True
+
+# Whether to show posterior distributions as bar summaries
+bar_posteriors = False
+
+# Whether to plot the number of reads in each junction
+number_junctions = True
+
+resolution = .5
+posterior_bins = 40
+gene_posterior_ratio = 5
+
+# List of colors for read denisites of each sample
+colors = [
+    "#32cd32",
+    "#1e90ff"]
+
+# Number of mapped reads in each sample
+# (Used to normalize the read density for RPKM calculation)
+#coverages = [
+#    981918,
+#    1070234,
+#    1263041,
+#    1053301]
+
+# Bar color for Bayes factor distribution
+# plots (--plot-bf-dist)
+# Paint them blue
+bar_color = "b"
+
+# Bayes factors thresholds to use for --plot-bf-dist
+bf_thresholds = [0, 1, 2, 5, 10, 20]
