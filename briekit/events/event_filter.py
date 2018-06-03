@@ -186,7 +186,7 @@ def map_ids(id1, id2):
     return np.array(idx2)[sidx0]
 
 
-def save_out(anno_in, anno_ref, out_file, chroms=[]):
+def save_out(anno_in, anno_ref, out_file, chroms=[], no_gene_version=False):
     exon_str_SE = []
     for i in range(0, len(anno_in), 8):
         vals = anno_in[i+3].strip().split("\t")
@@ -213,10 +213,14 @@ def save_out(anno_in, anno_ref, out_file, chroms=[]):
     fid.writelines("#annotation file with high-qulity alternative exons.\n")
     for i in range(0, len(anno_in), 8):
         if i is not None:
-            attributes = parse_attribute(gene_info[ginfo_idx[i/8]], default="#")
+            attributes = parse_attribute(gene_info[ginfo_idx[i/8]], default="#",
+                ID_tags="ID,gene_id", Name_tags="Name,gene_name")
         else:
             attributes = {"ID": "#", "Name": "#", "Type": "#"}
-        _gene_id = attributes["ID"]
+        if no_gene_version:
+            _gene_id = attributes["ID"].split(".")[0]
+        else:
+            _gene_id = attributes["ID"]
             
         _num = temp_gene.count(_gene_id)
         temp_gene.append(_gene_id)
@@ -307,6 +311,9 @@ def main():
     group.add_option("--no_splice_site", action="store_true", 
         dest="no_splice_site", default=False, 
         help="Don't check splice sites, i.e., GT-AG; otherwise check.")
+    group.add_option("--no_gene_version", action="store_true", 
+        dest="no_gene_version", default=False, 
+        help="Remove gene id version, eg. ENSxxx.2")
     parser.add_option_group(group)
 
     (options, args) = parser.parse_args()
@@ -358,6 +365,7 @@ def main():
     as_exon_tts = int(options.as_exon_tts)
     keep_overlap = options.keep_overlap
     no_splice_site = options.no_splice_site
+    no_gene_version = options.no_gene_version
 
     chroms = []
     for i in range(1,23):
@@ -391,7 +399,7 @@ def main():
     print("%d Skipped Exon events pass the overlapping check." %(len(g_idx)))
 
     # saving out
-    save_out(anno_out, anno_ref, out_file, chroms)
+    save_out(anno_out, anno_ref, out_file, chroms, no_gene_version)
     bashCommand = "gzip -f %s" %(out_file) 
     pro = subprocess.Popen(bashCommand.split(), stdout=subprocess.PIPE)
     output = pro.communicate()[0]
