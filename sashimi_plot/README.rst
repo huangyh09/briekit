@@ -40,7 +40,7 @@ following the BRIE specific example brie_sashimi.sh_.
   python sashimi_plot.py --plot-event $event_id test-data/event-data/ settings/sashimi_plot_settings.txt --output-dir $out_dir --plot-title "Example event" --plot-label "test.pdf" #--no-posteriors
 
 Note, you need to customise the setting for generating sashimi plot. One example
-for BREI output is here_.
+for BRIE's outputs is here_.
 
 .. _BRIE-kit: https://github.com/huangyh09/briekit/wiki#0-installation
 .. _sashimi_plot.py: https://github.com/huangyh09/briekit/blob/master/sashimi_plot/sashimi_plot.py
